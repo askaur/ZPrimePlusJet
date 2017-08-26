@@ -135,7 +135,11 @@ def main(options,args):
                                 error = array.array('d',[0.0])
                                 rate = histo.IntegralAndError(1,histo.GetNbinsX(),i,i,error)                 
                                 #mcstatErrs['%s_%s'%(proc,box),i,j] = 1.0+histo.GetBinError(j,i)/histo.Integral()
-                                mcstatErrs['%s_%s'%(proc,box),i,j] = 1.0+(error[0]/rate)
+                                print proc, box, rate, error[0]
+                                if rate>0:
+                                    mcstatErrs['%s_%s'%(proc,box),i,j] = 1.0+(error[0]/rate)
+                                else:
+                                    mcstatErrs['%s_%s'%(proc,box),i,j] = 1.0
                             else:
                                 mcstatErrs['%s_%s'%(proc,box),i,j] = 1.0
                             
@@ -277,7 +281,6 @@ def main(options,args):
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option('-b', action='store_true', dest='noX', default=False, help='no X11 windows')
-    parser.add_option("--lumi", dest="lumi", type=float, default = 30,help="luminosity", metavar="lumi")
     parser.add_option('-i','--ifile', dest='ifile', default = 'hist_1DZbb.root',help='file with histogram inputs', metavar='ifile')
     parser.add_option('--ifile-loose', dest='ifile_loose', default=None, help='second file with histogram inputs (looser b-tag cut to take W/Z/H templates)', metavar='ifile_loose')
     parser.add_option('-o','--odir', dest='odir', default = 'cards/',help='directory to write cards', metavar='odir')
